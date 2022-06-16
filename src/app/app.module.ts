@@ -9,12 +9,23 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { OverlayModule } from '@angular/cdk/overlay';
+import { CdkTableModule } from '@angular/cdk/table';
 
 import { MultiSelectAutocompleteComponent } from './multi-select-autocomplete/multi-select-autocomplete.component';
 import { FormsModule } from '@angular/forms';
+import { SearchComponent } from './search/search.component';
+import { SearchSectionComponent } from './search/search-section/search-section.component';
+import { SearchActionComponent } from './search/search-action/search-action.component';
 
 @NgModule({
-  declarations: [AppComponent, MultiSelectAutocompleteComponent],
+  declarations: [
+    AppComponent,
+    MultiSelectAutocompleteComponent,
+    SearchComponent,
+    SearchSectionComponent,
+    SearchActionComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -23,6 +34,8 @@ import { FormsModule } from '@angular/forms';
     MatChipsModule,
     MatIconModule,
     MatInputModule,
+    OverlayModule,
+    CdkTableModule,
     FormsModule,
   ],
   providers: [],

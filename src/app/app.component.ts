@@ -33,4 +33,56 @@ export class AppComponent {
     this.selectedList = things;
     console.log(things);
   }
+
+  private data = [
+    { x: 'X1', y: 'Y1', z: 'Z1' },
+    { x: 'X2', y: 'Y2', z: 'Z2' },
+    { x: 'X3', y: 'Y3', z: 'Z3' },
+    { x: 'X4', y: 'Y4', z: 'Z4' },
+    { x: 'X5', y: 'Y5', z: 'Z5' },
+  ];
+
+  public section1 = {
+    title: 'section 1',
+    columns: [
+      {
+        headerText: 'col 1',
+        dataProperty: 'x',
+        weight: 2,
+      },
+      {
+        headerText: 'col 2',
+        dataProperty: 'y',
+      },
+      {
+        headerText: 'col 3',
+        dataProperty: 'z',
+      },
+    ],
+    data: this.data,
+  };
+
+  public section2 = {
+    title: 'section 2',
+    columns: [
+      {
+        headerText: 'Column number 1',
+        dataProperty: 'x',
+        weight: 2,
+      },
+      {
+        headerText: 'Column number2',
+        dataProperty: 'y',
+      },
+      {
+        headerText: 'Column number3',
+        dataProperty: 'z',
+      },
+    ],
+    data: this.data,
+  };
+
+  actionHandler(id: string): void {
+    console.log(`app component actionHandler: ${id}`);
+  }
 }

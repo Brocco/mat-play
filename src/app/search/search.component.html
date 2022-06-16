@@ -1,0 +1,29 @@
+<input
+  type="text"
+  cdkOverlayOrigin
+  #searchBox="cdkOverlayOrigin"
+  [(ngModel)]="searchQuery"
+  [placeholder]="placeholder"
+  (ngModelChange)="searchQueryChanged($event)"
+  (focus)="searchFocused()"
+/>
+<ng-template
+  #overlayTemplate
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="searchBox"
+  [cdkConnectedOverlayOpen]="overlayOpen"
+  (overlayOutsideClick)="clickOutsideOverlay($event, searchBox)"
+>
+  <div class="overlay">
+    <div class="section-container">
+      <ng-content select="rcm-search-section"></ng-content>
+    </div>
+    <div class="action-container">
+      <ng-content
+        select="rcm-search-action"
+        #action
+        (click)="actionClicked(action)"
+      ></ng-content>
+    </div>
+  </div>
+</ng-template>

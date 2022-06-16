@@ -20,11 +20,11 @@ import { SearchService } from './search.service';
   styleUrls: ['./search.component.less'],
   providers: [SearchService],
 })
-export class SearchComponent<T> {
+export class SearchComponent {
   @Input() searchQuery = '';
   @Input() placeholder = '';
 
-  @Output() selected = new EventEmitter<T>();
+  @Output() selected = new EventEmitter<any>();
   @Output() action = this.searchService.actions$.pipe(
     tap(() => {
       this.overlayOpen = false;

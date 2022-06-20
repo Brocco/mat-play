@@ -1,19 +1,11 @@
 <div class="title">{{ title }}</div>
-<table cdk-table [dataSource]="data" *ngIf="data.length > 0">
+<table cdk-table [dataSource]="data$">
   <ng-container *ngFor="let column of columns">
     <ng-container [cdkColumnDef]="column.dataProperty">
-      <th
-        cdk-header-cell
-        *cdkHeaderCellDef
-        [ngStyle]="{ flex: column.weight || 1 }"
-      >
+      <th cdk-header-cell *cdkHeaderCellDef [ngStyle]="{ flex: column.weight || 1 }">
         {{ column.headerText }}
       </th>
-      <td
-        cdk-cell
-        *cdkCellDef="let row"
-        [ngStyle]="{ flex: column.weight || 1 }"
-      >
+      <td cdk-cell *cdkCellDef="let row" [ngStyle]="{ flex: column.weight || 1 }">
         {{ row[column.dataProperty] }}
       </td>
     </ng-container>
@@ -22,6 +14,7 @@
   <tr cdk-header-row *cdkHeaderRowDef="columnNames"></tr>
   <tr
     cdk-row
+    [rcmSelectableRow]="row"
     *cdkRowDef="let row; columns: columnNames"
     (click)="rowClick(row)"
   ></tr>

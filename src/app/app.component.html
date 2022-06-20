@@ -17,24 +17,22 @@
 
 <pre>{{ selectedList | json }}</pre> -->
 
-<rcm-search placeholder="moo" searchQuery="" (action)="actionHandler($event)">
+<rcm-search
+  placeholder="Enter Search Query"
+  searchQuery=""
+  (searchQueryChange)="searchQueryChangeHandler($event)">
   <rcm-search-section
     [title]="section1.title"
     [data]="section1.data"
     [columns]="section1.columns"
+    (selected)="selectionMade($event)"
   ></rcm-search-section>
   <rcm-search-section
     [title]="section2.title"
     [data]="section2.data"
     [columns]="section2.columns"
+    (selected)="selectionMade($event)"
   ></rcm-search-section>
-  <rcm-search-action [actionId]="'abc123'">abc123</rcm-search-action>
-  <rcm-search-action [actionId]="'def456'">def456</rcm-search-action>
-</rcm-search>
-
-<rcm-search placeholder="poo" searchQuery="" (action)="actionHandler($event)">
-  <rcm-search-section>section 1</rcm-search-section>
-  <rcm-search-section>section 2</rcm-search-section>
-  <rcm-search-action [actionId]="'ABC123'">ABC123</rcm-search-action>
-  <rcm-search-action [actionId]="'DEF456'">DEF456</rcm-search-action>
+  <div rcm-search-action (click)="actionHandler('handle: abc123')">abc123</div>
+  <rcm-search-action (click)="actionHandler('handle: def456')">def456</rcm-search-action>
 </rcm-search>

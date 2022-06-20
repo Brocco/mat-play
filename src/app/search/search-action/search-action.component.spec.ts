@@ -1,22 +1,15 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { SearchService } from '../search.service';
 
 import { SearchActionComponent } from './search-action.component';
 
 describe('SearchActionComponent', () => {
   let component: SearchActionComponent;
-  let fixture: ComponentFixture<SearchActionComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [ SearchActionComponent ]
-    })
-    .compileComponents();
-  });
+  let searchService: SearchService;
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SearchActionComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    searchService = jasmine.createSpyObj(SearchService, ['actionClicked']);
+    component = new SearchActionComponent();
   });
 
   it('should create', () => {

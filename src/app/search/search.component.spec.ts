@@ -1,39 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { ReplaySubject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { SearchComponent } from './search.component';
+
+import { take } from 'rxjs/operators';
 import { SearchService } from './search.service';
 
 describe('SearchComponent', () => {
   let component: SearchComponent;
-  let fixture: ComponentFixture<SearchComponent>;
   let searchService;
-  let searchActionSubject: ReplaySubject<string>;
+  let searchActionSubject: Subject<string>;
 
   beforeEach(async () => {
-    searchActionSubject = new ReplaySubject(1);
     searchService = jasmine.createSpyObj(SearchService, ['actionClicked']);
-    searchService.action$ = searchActionSubject.asObservable();
+    searchActionSubject = new Subject();
+    searchService.actions$ = searchActionSubject.asObservable();
 
-    await TestBed.configureTestingModule({
-      declarations: [SearchComponent],
-      providers: [
-        {
-          provide: SearchService,
-          useValue: searchService,
-        },
-      ],
-    }).compileComponents();
+    component = new SearchComponent(searchService);
   });
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(SearchComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  it('should create', () => {
+  it('should create the component', () => {
     expect(component).toBeTruthy();
-    expect(true).toEqual(false);
+  });
+
+  it('should emit an action when an action is triggered', async () => {
+    const actionId = 'action id';
+    const result = component.action.pipe(take(1)).toPromise();
+    searchActionSubject.next(actionId);
+    expect(await result).toEqual(actionId);
   });
 });

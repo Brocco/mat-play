@@ -18,6 +18,9 @@ import { SearchComponent } from './search/search.component';
 import { SearchSectionComponent } from './search/search-section/search-section.component';
 import { SearchActionComponent } from './search/search-action/search-action.component';
 
+import { A11yModule } from '@angular/cdk/a11y';
+import { SelectableRow } from './search/selectable-row/selectable-row.directive';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -25,6 +28,7 @@ import { SearchActionComponent } from './search/search-action/search-action.comp
     SearchComponent,
     SearchSectionComponent,
     SearchActionComponent,
+    SelectableRow,
   ],
   imports: [
     BrowserModule,
@@ -36,6 +40,7 @@ import { SearchActionComponent } from './search/search-action/search-action.comp
     MatInputModule,
     OverlayModule,
     CdkTableModule,
+    A11yModule,
     FormsModule,
   ],
   providers: [],

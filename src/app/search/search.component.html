@@ -6,6 +6,7 @@
   [placeholder]="placeholder"
   (ngModelChange)="searchQueryChanged($event)"
   (focus)="searchFocused()"
+  (keyup)="onKeydown($event)"
 />
 <ng-template
   #overlayTemplate
@@ -19,11 +20,7 @@
       <ng-content select="rcm-search-section"></ng-content>
     </div>
     <div class="action-container">
-      <ng-content
-        select="rcm-search-action"
-        #action
-        (click)="actionClicked(action)"
-      ></ng-content>
+      <ng-content select="rcm-search-action, [rcm-search-action]" #action></ng-content>
     </div>
   </div>
 </ng-template>

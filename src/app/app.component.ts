@@ -31,16 +31,23 @@ export class AppComponent {
 
   listChanged(things: Thing[]) {
     this.selectedList = things;
-    console.log(things);
   }
 
   private data = [
-    { x: 'X1', y: 'Y1', z: 'Z1' },
-    { x: 'X2', y: 'Y2', z: 'Z2' },
-    { x: 'X3', y: 'Y3', z: 'Z3' },
-    { x: 'X4', y: 'Y4', z: 'Z4' },
-    { x: 'X5', y: 'Y5', z: 'Z5' },
+    { x: 'x1', y: 'y1', z: 'z1' },
+    { x: 'x2', y: 'y2', z: 'z2' },
+    { x: 'x3', y: 'y3', z: 'z3' },
+    { x: 'x4', y: 'y4', z: 'z4' },
+    { x: 'x5', y: 'y5', z: 'z5' },
   ];
+
+  ngOnInit() {
+    setInterval(() => {
+      const index = this.data.length + 1;
+      this.data = [...this.data, { x: `x${index}`, y: `y${index}`, z: `z${index}` }];
+      this.section1.data = this.data;
+    }, 10000)
+  }
 
   public section1 = {
     title: 'section 1',
@@ -79,8 +86,20 @@ export class AppComponent {
         dataProperty: 'z',
       },
     ],
-    data: this.data,
+    data: this.data.map((d) => ({
+      x: d.x.toUpperCase(),
+      y: d.y.toUpperCase(),
+      z: d.z.toUpperCase(),
+    })),
   };
+
+  searchQueryChangeHandler(query: string) {
+
+  }
+
+  selectionMade(selection: any): void {
+    console.log(`app component selection made handler: ${JSON.stringify(selection)}`);
+  }
 
   actionHandler(id: string): void {
     console.log(`app component actionHandler: ${id}`);

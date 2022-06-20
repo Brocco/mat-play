@@ -4,57 +4,55 @@ import {
   ContentChildren,
   EventEmitter,
   Input,
-  OnInit,
+  AfterViewInit,
   Output,
+  QueryList,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { fromEvent } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
-import { SearchActionComponent } from './search-action/search-action.component';
+import { ENTER } from '@angular/cdk/keycodes';
+import { SelectableRow } from './selectable-row/selectable-row.directive';
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { SearchSectionComponent } from './search-section/search-section.component';
 import { SearchService } from './search.service';
 
 @Component({
   selector: 'rcm-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.less'],
-  providers: [SearchService],
+  providers: [SearchService]
 })
-export class SearchComponent {
+export class SearchComponent implements AfterViewInit {
   @Input() searchQuery = '';
   @Input() placeholder = '';
 
   @Output() selected = new EventEmitter<any>();
-  @Output() action = this.searchService.actions$.pipe(
-    tap(() => {
-      this.overlayOpen = false;
-    })
-  );
+  @Output() searchQueryChange = new EventEmitter<string>();
 
-  @ViewChild('overlayTemplate') overlayTemplate: TemplateRef<any> | undefined =
-    undefined;
-  @ContentChildren(SearchActionComponent)
-  searchActions: SearchActionComponent[] = [];
+  @ViewChild('overlayTemplate') overlayTemplate: TemplateRef<any> | undefined = undefined;
+  @ContentChildren(SearchSectionComponent) sections!: QueryList<SearchSectionComponent>;
+  private keyManager!: ActiveDescendantKeyManager<SelectableRow>;
 
   public overlayOpen = false;
 
-  constructor(private searchService: SearchService) {}
+  constructor(private searchService: SearchService) {
+  }
+
+  ngAfterViewInit(): void {
+    this.searchService.selectableRows$.subscribe(allRows => {
+      this.keyManager = new ActiveDescendantKeyManager(allRows).withWrap().withTypeAhead();
+    })
+  }
 
   public searchFocused(): void {
     this.overlayOpen = true;
-    this.searchActions.forEach((action) => {
-      // console.log(`search action: ${action.actionId}`);
-    });
   }
 
   public searchQueryChanged(query: string): void {
-    console.log(`search query changed to ${query}`);
+    this.searchQueryChange.emit(query);
   }
 
-  public clickOutsideOverlay(
-    event: MouseEvent,
-    search: CdkOverlayOrigin
-  ): void {
+  public clickOutsideOverlay(event: MouseEvent, search: CdkOverlayOrigin): void {
     // do not close if the click event is the search box
     const isInput = event.target === search.elementRef.nativeElement;
     if (!isInput) {
@@ -62,7 +60,11 @@ export class SearchComponent {
     }
   }
 
-  public actionClicked(action: any): void {
-    console.log(action);
+  onKeydown(event: any) {
+    if (event.keyCode === ENTER) {
+      console.log(`SELECTED VIA KB: ${JSON.stringify(this.keyManager.activeItem?.item)}`);
+    } else {
+      this.keyManager.onKeydown(event);
+    }
   }
 }

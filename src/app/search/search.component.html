@@ -15,7 +15,12 @@
   [cdkConnectedOverlayOpen]="overlayOpen"
   (overlayOutsideClick)="clickOutsideOverlay($event, searchBox)"
 >
-  <div class="overlay">
+  <div
+    class="overlay"
+    [ngStyle]="{
+      'max-height': maxHeight || '200px'
+    }"
+  >
     <div class="section-container">
       <ng-content select="rcm-search-section"></ng-content>
     </div>

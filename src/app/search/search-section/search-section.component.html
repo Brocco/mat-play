@@ -19,3 +19,6 @@
     (click)="rowClick(row)"
   ></tr>
 </table>
+<div class="overflow-message" *ngIf="showOverflowSection$ | async">
+  {{ overflowMessage || defaultOverflowMessage }}
+</div>

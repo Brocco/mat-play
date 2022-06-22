@@ -1,20 +1,29 @@
-import { ElementRef, Injectable, QueryList } from '@angular/core';
-import { map, Observable, scan, switchMap, Subject, mergeMap, throwIfEmpty, merge, combineLatest, tap, BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { combineLatest, BehaviorSubject, Observable, Subject } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { SelectableRow } from './selectable-row/selectable-row.directive';
-
-export interface SearchRows {ref: any, rows: SelectableRow[]}
 
 @Injectable()
 export class SearchService {
-  private queryLists = new BehaviorSubject<Observable<SearchRows>[]>([]);
-  public registerSection(rows: Observable<SearchRows>) {
-    this.queryLists.next([...this.queryLists.value, rows]);
-    // searchRows.push
+  private selectableRowsSubject = new BehaviorSubject<Observable<SelectableRow[]>[]>([]);
+  public registerSection(rows: Observable<SelectableRow[]>) {
+    this.selectableRowsSubject.next([...this.selectableRowsSubject.value, rows]);
   }
 
-
-  public selectableRows$ = this.queryLists.pipe(
-    switchMap(queryLists => combineLatest(queryLists)),
-    map(searchRows => searchRows.reduce((all, searchRow) => [...all, ...searchRow.rows], [] as SelectableRow[])),
+  public selectableRows$ = this.selectableRowsSubject.pipe(
+    switchMap((selectableRows) => combineLatest(selectableRows)),
+    map((searchRows) => searchRows.flat(1))
   );
+
+  private rowSelectedSubject = new Subject<any>();
+  public rowSelected$ = this.rowSelectedSubject.asObservable();
+  public rowSelected(row: any): void {
+    this.rowSelectedSubject.next(row);
+  }
+
+  private actionClickSubject = new Subject<void>();
+  public actionClick$ = this.actionClickSubject.asObservable();
+  public actionClicked(): void {
+    this.actionClickSubject.next();
+  }
 }

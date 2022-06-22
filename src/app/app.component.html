@@ -20,18 +20,19 @@
 <rcm-search
   placeholder="Enter Search Query"
   searchQuery=""
-  (searchQueryChange)="searchQueryChangeHandler($event)">
+  (searchQueryChange)="searchQueryChangeHandler($event)"
+  (selected)="selectionMade($event)"
+  maxHeight="1000px"
+>
   <rcm-search-section
     [title]="section1.title"
     [data]="section1.data"
     [columns]="section1.columns"
-    (selected)="selectionMade($event)"
   ></rcm-search-section>
   <rcm-search-section
     [title]="section2.title"
     [data]="section2.data"
     [columns]="section2.columns"
-    (selected)="selectionMade($event)"
   ></rcm-search-section>
   <div rcm-search-action (click)="actionHandler('handle: abc123')">abc123</div>
   <rcm-search-action (click)="actionHandler('handle: def456')">def456</rcm-search-action>

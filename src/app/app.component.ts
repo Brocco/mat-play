@@ -46,7 +46,7 @@ export class AppComponent {
       const index = this.data.length + 1;
       this.data = [...this.data, { x: `x${index}`, y: `y${index}`, z: `z${index}` }];
       this.section1.data = this.data;
-    }, 10000)
+    }, 1000);
   }
 
   public section1 = {
@@ -94,7 +94,7 @@ export class AppComponent {
   };
 
   searchQueryChangeHandler(query: string) {
-
+    console.log(`app comp searchQueryChangeHandler: ${query}`);
   }
 
   selectionMade(selection: any): void {

@@ -14,12 +14,7 @@ export class SelectableRow implements Highlightable {
 
   public disabled?: boolean | undefined;
 
-  constructor(private host: ElementRef) {
-  }
-
-  // focus() {
-  //   this.host.nativeElement.focus();
-  // }
+  constructor(private host: ElementRef) {}
 
   getLabel(): string {
     return this.host.nativeElement.innerText;

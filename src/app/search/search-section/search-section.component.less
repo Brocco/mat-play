@@ -1,21 +1,53 @@
+.title, table * {
+  text-transform: uppercase;
+}
+
+.title {
+  background-color: rgba(0, 0, 0, 0.54);
+  color: white;
+  height: 18px;
+  line-height: 18px;
+  padding: 0 16px;
+}
+
 table {
   width: 100%;
+  border-spacing: 0;
 }
 
 .cdk-row, .cdk-header-row, .cdk-footer-row {
   display: flex;
   flex-basis: 1;
+  padding: 0 16px;
+}
+
+.cdk-row {
+  min-height: 40px;
+  align-items: center;
 }
 
 .cdk-cell, .cdk-header-cell, .cdk-footer-cell {
   text-align: left;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
-.cdk-row:hover {
+.cdk-row:hover, .cdk-row.active {
   cursor: pointer;
-  color: white;
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-.active {
+.cdk-header-row {
+  background-color: rgba(0, 0, 0, 0.32);
+  color: white;
+  height: 18px;
+  line-height: 18px;
+}
+
+.overflow-message {
+  display: flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 16px;
   color: red;
 }

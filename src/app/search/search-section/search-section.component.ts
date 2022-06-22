@@ -1,14 +1,6 @@
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
+import { Component, Input, QueryList, ViewChildren } from '@angular/core';
 import { BehaviorSubject, map, merge, Observable, of } from 'rxjs';
-import { SearchRows, SearchService } from '../search.service';
+import { SearchService } from '../search.service';
 import { SelectableRow } from '../selectable-row/selectable-row.directive';
 
 export interface SearchSectionColumn {
@@ -34,44 +26,42 @@ export class SearchSectionComponent {
     this.columnNames = this._columns.map((c) => c.dataProperty);
   }
   private dataSubject = new BehaviorSubject<any[]>([]);
-  public data$ = this.dataSubject.asObservable();
+  public data$ = this.dataSubject.pipe(
+    map((data) => data.filter((_, i) => i < this.maxNumberRows))
+  );
+
+  @Input() maxNumberRows = 10;
 
   @Input('data')
   public set data(value: any[]) {
     this.dataSubject.next(value);
   }
 
+  @Input() overflowMessage: string = 'hi mom';
 
-  @Output() selected = new EventEmitter<any>();
+  // TODO: update with correct overflow message
+  public defaultOverflowMessage = 'Bruh, refine your search';
+
+  public showOverflowSection$ = this.dataSubject.pipe(
+    map((data) => data.length >= this.maxNumberRows)
+  );
 
   public columnNames: string[] = [];
 
-  constructor(private elementRef: ElementRef,private searchService: SearchService) {}
+  constructor(private searchService: SearchService) {}
 
   public rowClick(row: any): void {
-    this.selected.emit(row);
+    this.searchService.rowSelected(row);
   }
 
   @ViewChildren(SelectableRow) rows!: QueryList<SelectableRow>;
 
-  public rowChanges$: Observable<SelectableRow[]> | undefined;// = this.rows.changes;
+  public rowChanges$: Observable<SelectableRow[]> | undefined; // = this.rows.changes;
 
   ngAfterViewInit() {
-    const componentReferenceId = Math.random();
-    const searchRows: Observable<SearchRows> = merge(
+    const searchRows: Observable<SelectableRow[]> = merge(
       of(this.rows.toArray()),
-      this.rows.changes.pipe(
-        map(
-          rows => rows.toArray()
-        )
-      )
-    ).pipe(
-      map((rows: SelectableRow[]) => {
-        return {
-          ref: componentReferenceId,
-          rows: rows
-        }
-      })
+      this.rows.changes.pipe(map((rows) => rows.toArray()))
     );
     this.searchService.registerSection(searchRows);
   }
